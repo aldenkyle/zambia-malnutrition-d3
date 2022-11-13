@@ -69,7 +69,7 @@ function setMap(){
         var csvData2 = values[3]
         var group = "ihme"
         //console.log(csvData)
-        console.log(zambia)
+        //console.log(zambia)
 
             
         //add africa countries to map
@@ -382,7 +382,7 @@ function makeMaxValue(data){
         domainArray.push(val);
     };
     var maxValue = Math.max.apply(null, domainArray) * 1.2
-    console.log(maxValue)
+    //console.log(maxValue)
     
     return maxValue;
     };
@@ -403,6 +403,7 @@ function setEnumerationUnits(zambia, map, path, colorScale){
         })
         .on("mouseover", function(d){
             highlight(d);
+            featureLabels2(d);
         })
          .on("mouseout", function(d){
             dehighlight(d);
@@ -458,7 +459,7 @@ function choropleth(props, colorScale){
 //function to create a dropdown menu for attribute selection
 function createDropdown(csvData,csvData2,group){
     var panel2h = $("#head-desc").height()
-    console.log(panel2h)
+    //console.log(panel2h)
     //add select element
     var dropdown = d3.select("body")
         .append("select")
@@ -534,8 +535,8 @@ function changeAttribute(attribute, csvData, csvData2){
     
 //function to position, size, and color bars in chart
 function updateChart(bars, n, colorScale, maxValue){
-    console.log(chartHeight)
-    console.log(maxValue)
+    //console.log(chartHeight)
+    //console.log(maxValue)
     var yScale = d3.scaleLinear()
     .range([chartHeight, 0])
     .domain([0, maxValue])
@@ -570,8 +571,8 @@ function updateChart(bars, n, colorScale, maxValue){
 };
     
 function updateChart2(bars, n, colorScale, maxValue2){
-    console.log(chartHeight)
-    console.log(maxValue2)
+    //console.log(chartHeight)
+    //console.log(maxValue2)
     var yScale = d3.scaleLinear()
     .range([chartHeight, 0])
     .domain([0, maxValue2])
@@ -614,6 +615,17 @@ function highlight(props){
        .style("stroke-width", "3");
     //setLabel
     setLabel(props)
+};
+    
+
+function featureLabels2(props){
+    //console.log(props)
+    //change stroke
+    var selected  = d3.selectAll(".regions."+ props.srcElement.__data__.properties.Name_2)
+    var ihme = selected._groups[0][0].__data__.properties[expressed]
+    var selected2  = d3.selectAll(".admin2s."+ props.srcElement.__data__.properties.Name_2)
+    var dhs = selected2._groups[0][0].__data__.properties[expressed]
+    //setLabel
 };
     
 function highlightBar(props){
@@ -676,8 +688,12 @@ function dehighlightBar(props){
 function setLabel(props){
     //label content
     //console.log(props)
+    var selected  = d3.selectAll(".regions."+ props.srcElement.__data__.properties.Name_2)
+    var ihme = selected._groups[0][0].__data__.properties[expressed]
+    var selected2  = d3.selectAll(".admin2s."+ props.srcElement.__data__.properties.Name_2)
+    var dhs = selected2._groups[0][0].__data__.properties[expressed]
     var labelAttribute =  "<b>" + props.srcElement.__data__.properties.Name_2 +
-        "</b><br>" + expressed + ":" + props.srcElement.__data__.properties[expressed];
+        "</b><br> IHME " + expressed + ": " + ihme + "</b><br> DHS " + expressed + ": " + dhs ;
     //console.log(labelAttribute)
     //create info label div
     var infolabel = d3.select("body")
@@ -691,12 +707,19 @@ function setLabel(props){
         .html(props.name);
 };
     
+
 //function to create dynamic label
 function setLabelBar(props){
     //label content
     //console.log(props)
-    var labelAttribute = "<b>" + props.srcElement.__data__.Name_2 +
-        "</b><br>" + expressed + ":" + props.srcElement.__data__[expressed];
+    var selected  = d3.selectAll(".regions."+ props.srcElement.__data__.Name_2)
+    var ihme = selected._groups[0][0].__data__.properties[expressed]
+    var selected2  = d3.selectAll(".admin2s."+ props.srcElement.__data__.Name_2)
+    var dhs = selected2._groups[0][0].__data__.properties[expressed]
+    var labelAttribute =  "<b>" + props.srcElement.__data__.Name_2 +
+        "</b><br> IHME " + expressed + ": " + ihme + "</b><br> DHS " + expressed + ": " + dhs  ;
+    //var labelAttribute = "<b>" + props.srcElement.__data__.Name_2 +
+        "</b><br>" + expressed + ": " + props.srcElement.__data__[expressed];
     //console.log(labelAttribute)
     //create info label div
     var infolabel = d3.select("body")
